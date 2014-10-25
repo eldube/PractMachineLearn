@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>Building a Classification Algorithm to Evaluate Unilateral Dumbbell Biceps Curl Exercise Performance based on Human Activity Recognition Data</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: rgb(88, 72, 246)
+   }
+
+   pre .number {
+     color: rgb(0, 0, 205);
+   }
+
+   pre .comment {
+     color: rgb(76, 136, 107);
+   }
+
+   pre .keyword {
+     color: rgb(0, 0, 255);
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: rgb(3, 106, 7);
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+
+</head>
+
+<body>
+<h1>Building a Classification Algorithm to Evaluate Unilateral Dumbbell Biceps Curl Exercise Performance based on Human Activity Recognition Data</h1>
+
+<h1>Introduction</h1>
+
+<p>According to the wikipedia encyclopedia[1], activity recognition aims to recognize the actions and goals of one or more agents from a series of observations on the agents actions and the environmental conditions. In Human Activity Recognition (HAR) the agents are human beings. Since the 1980s, this research field has captured the attention of several computer science communities due to its strength in providing personalized support for many different applications and its connection to many different fields of study such as medicine, human-computer interaction, or sociology.  According to the Human Activity Recognition (HAR) research  website (<a href="http://groupware.les.inf.puc-rio.br/har">http://groupware.les.inf.puc-rio.br/har</a>), HAR has emerged as a key research area and is gaining increasing attention by the pervasive computing research community. Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. Applications for HAR include elderly monitoring, life log systems for monitoring energy expenditure and for supporting weight-loss programs, and digital assistants for weight lifting exercises. This report considered data collected from weight lifting exercises.</p>
+
+<h1>Aim</h1>
+
+<p>The aim of this project is to build a classification algorithm based on weight lifting data collected by the human activity recognition research (<a href="http://groupware.les.inf.puc-rio.br/har">http://groupware.les.inf.puc-rio.br/har</a>). The original data can be downloaded from <a href="http://groupware.les.inf.puc-rio.br/static/WLE/WearableComputing_weight_lifting_exercises_biceps_curl_variations.csv">http://groupware.les.inf.puc-rio.br/static/WLE/WearableComputing_weight_lifting_exercises_biceps_curl_variations.csv</a>. Using data collected from accelerometers weared on the belt, forearm, arm, and dumbell, the algorithm must predict how well a set of Unilateral Dumbbell Biceps Curl exercise was performed by the wearer. The classification falls into five(5) classes depending on how well the wearer performed the set of Unilateral Dumbbell Biceps Curl. The different classes are as described in the data collection section that follows below.</p>
+
+<h1>Data Collecting</h1>
+
+<p>According to Velloso et al [2],  the data was collected from six male participants aged between 20-28 years, with little weight lifting experience, and a using a relatively light dumbbell (1.25kg). The participants were asked to perform one set of 10 repetitions of the Unilateral Dumbbell Biceps Curl in in different fashions: exactly according to the specification (Class A), throwing the elbows to the front (Class B), lifting the dumbbell only halfway (Class C), lowering the dumbbell only halfway (Class D) and throwing the hips to the front (Class E). Class A corresponds to the specified execution of the exercise, while the other 4 classes correspond to common mistakes. Participants were supervised by an experienced weight lifter to make sure the execution complied to the manner they were supposed to simulate.</p>
+
+<h1>Data Processing</h1>
+
+<h2>Data</h2>
+
+<p>The dataset used in building the classification algorithm was provided by the Human Activity research group (<a href="http://groupware.les.inf.puc-rio.br/har">http://groupware.les.inf.puc-rio.br/har</a>) and
+Velloso, E. et al (2013) provides mored detailed description of the dataset. The data used for this report was downloaded from downloaded from <a href="https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv">https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv</a> (<em>as per instructions in the project write-up page</em>). The algoritm was then tested using twenty(20) new test observations which were downloaded from <a href="https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv.The">https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv.The</a> followwing R code can be used to download and read the training and the 20 test cases datasets.</p>
+
+<pre><code class="r"># Download training csv file ; http URL instead of https URL
+TrainingCSVFile &lt;- &quot;pml-training.csv&quot;
+if (!file.exists(TrainingCSVFile)) {
+    fileUrl &lt;- &quot;http://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv&quot;
+    download.file(fileUrl, destfile = TrainingCSVFile, method = &quot;internal&quot;)
+}
+
+# Download test cases csv file; use http URL instead of https URL
+TestingCSVFile &lt;- &quot;pml-testing.csv&quot;
+if (!file.exists(TestingCSVFile)) {
+    fileUrl &lt;- &quot;http://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv&quot;
+    download.file(fileUrl, destfile = TestingCSVFile, method = &quot;internal&quot;)
+}
+
+## stop if downloading failed or file &#39;pml-training.csv&#39; not in working
+## directory
+if (!file.exists(TrainingCSVFile)) {
+    # stop(&#39;Error: file :pml-training.csv is not in the working directory.&#39;)
+}
+
+## stop if downloading failed or file &#39;pml-testing.csv&#39; not in working
+## directory
+if (!file.exists(TestingCSVFile)) {
+    # stop(&#39;Error: file : pml-testing.csv is not in the working directory.&#39;)
+}
+
+
+## read training and test cases data from the files
+trainData &lt;- read.csv(&quot;pml-training.csv&quot;, header = TRUE)
+testData &lt;- read.csv(&quot;pml-testing.csv&quot;, header = TRUE)
+
+dim(trainData)
+</code></pre>
+
+<pre><code>## [1] 19622   160
+</code></pre>
+
+<pre><code class="r">dim(testData)
+</code></pre>
+
+<pre><code>## [1]  20 160
+</code></pre>
+
+<h1>Exploratory Analysis</h1>
+
+<h2>Features</h2>
+
+<p>The training dataset contains 19622 observations and the testing dataset contains only 20. Each dataset contains  160  features/variables. APPENDIX A provdes a list of  all the feature names in the training dataset. Shown below are the first and last five(5) variable/features names.</p>
+
+<pre><code class="r">head(names(trainData), 5)
+</code></pre>
+
+<pre><code>## [1] &quot;X&quot;                    &quot;user_name&quot;            &quot;raw_timestamp_part_1&quot;
+## [4] &quot;raw_timestamp_part_2&quot; &quot;cvtd_timestamp&quot;
+</code></pre>
+
+<pre><code class="r">tail(names(trainData), 5)
+</code></pre>
+
+<pre><code>## [1] &quot;accel_forearm_z&quot;  &quot;magnet_forearm_x&quot; &quot;magnet_forearm_y&quot;
+## [4] &quot;magnet_forearm_z&quot; &quot;classe&quot;
+</code></pre>
+
+<p>For the purposes building the classification algorithm, the class variable (<em>classe</em>) will be used as an outcome variable. The following R code shows the classification of the first ten(10) observations in the training dataset. The five levels of classification (A, B, C, D, E) are also shown</p>
+
+<pre><code class="r">head(trainData$classe, 10)
+</code></pre>
+
+<pre><code>##  [1] A A A A A A A A A A
+## Levels: A B C D E
+</code></pre>
+
+<h2>Data cleaning</h2>
+
+<p>Some of the feature names appear irrelevant for the required classifier and others contain errounous data and therefore need to the removed or cleaned. For example, the feature labelled <strong>x</strong> only contain sequence numbers for the observations and therefore provides not useful information for the algorithm.Some features,like <strong>kurtosis_yaw_belt</strong>, contain only null (empty) values or #DIV/0 error data and there can be removed from the datasets.  The R code below removes some of the features that do not contribute to the algorithm as noted above.</p>
+
+<pre><code class="r">## remove the first variable &#39;X&#39; since its only sequence numbering of the
+## observations; it&#39;s not a feature
+trainData[[&quot;X&quot;]] = NULL
+testData[[&quot;X&quot;]] = NULL
+
+## the following variable were also removed because they contain blank data
+## or #DIV/0! error data or contain only some zeros (0)
+trainData[[&quot;kurtosis_yaw_belt&quot;]] = NULL
+testData[[&quot;kurtosis_yaw_belt&quot;]] = NULL
+
+
+trainData[[&quot;skewness_yaw_belt&quot;]] = NULL
+testData[[&quot;skewness_yaw_belt&quot;]] = NULL
+
+
+trainData[[&quot;amplitude_yaw_belt&quot;]] = NULL
+testData[[&quot;amplitude_yaw_belt&quot;]] = NULL
+
+trainData[[&quot;kurtosis_yaw_forearm&quot;]] = NULL
+testData[[&quot;kurtosis_yaw_forearm&quot;]] = NULL
+
+trainData[[&quot;skewness_yaw_forearm&quot;]] = NULL
+testData[[&quot;skewness_yaw_forearm&quot;]] = NULL
+
+trainData[[&quot;amplitude_yaw_forearm&quot;]] = NULL
+testData[[&quot;amplitude_yaw_forearm&quot;]] = NULL
+
+trainData[[&quot;kurtosis_yaw_dumbbell&quot;]] = NULL
+testData[[&quot;kurtosis_yaw_dumbbell&quot;]] = NULL
+
+
+trainData[[&quot;skewness_yaw_dumbbell&quot;]] = NULL
+testData[[&quot;skewness_yaw_dumbbell&quot;]] = NULL
+
+trainData[[&quot;amplitude_yaw_dumbbell&quot;]] = NULL
+testData[[&quot;amplitude_yaw_dumbbell&quot;]] = NULL
+
+
+## The following variables were also removed because they contains more than
+## 97% null values
+trainData[[&quot;kurtosis_roll_belt&quot;]] = NULL
+testData[[&quot;kurtosis_roll_belt&quot;]] = NULL
+
+trainData[[&quot;kurtosis_picth_belt&quot;]] = NULL
+testData[[&quot;kurtosis_picth_belt&quot;]] = NULL
+
+trainData[[&quot;skewness_roll_belt&quot;]] = NULL
+testData[[&quot;skewness_roll_belt&quot;]] = NULL
+
+trainData[[&quot;skewness_roll_belt.1&quot;]] = NULL
+testData[[&quot;skewness_roll_belt.1&quot;]] = NULL
+
+
+trainData[[&quot;max_yaw_belt&quot;]] = NULL
+testData[[&quot;max_yaw_belt&quot;]] = NULL
+
+trainData[[&quot;min_yaw_belt&quot;]] = NULL
+testData[[&quot;min_yaw_belt&quot;]] = NULL
+
+
+trainData[[&quot;kurtosis_roll_arm&quot;]] = NULL
+testData[[&quot;kurtosis_roll_arm&quot;]] = NULL
+
+
+trainData[[&quot;kurtosis_picth_arm&quot;]] = NULL
+testData[[&quot;kurtosis_picth_arm&quot;]] = NULL
+
+trainData[[&quot;kurtosis_yaw_arm&quot;]] = NULL
+testData[[&quot;kurtosis_yaw_arm&quot;]] = NULL
+
+
+trainData[[&quot;kurtosis_roll_forearm&quot;]] = NULL
+testData[[&quot;kurtosis_roll_forearm&quot;]] = NULL
+
+
+trainData[[&quot;kurtosis_picth_forearm&quot;]] = NULL
+testData[[&quot;kurtosis_picth_forearm&quot;]] = NULL
+
+trainData[[&quot;skewness_roll_forearm&quot;]] = NULL
+testData[[&quot;skewness_roll_forearm&quot;]] = NULL
+
+trainData[[&quot;skewness_pitch_forearm&quot;]] = NULL
+testData[[&quot;skewness_pitch_forearm&quot;]] = NULL
+
+
+trainData[[&quot;skewness_roll_arm&quot;]] = NULL
+testData[[&quot;skewness_roll_arm&quot;]] = NULL
+
+trainData[[&quot;skewness_pitch_arm&quot;]] = NULL
+testData[[&quot;skewness_pitch_arm&quot;]] = NULL
+
+
+trainData[[&quot;skewness_yaw_arm&quot;]] = NULL
+testData[[&quot;skewness_yaw_arm&quot;]] = NULL
+
+trainData[[&quot;kurtosis_roll_dumbbell&quot;]] = NULL
+testData[[&quot;kurtosis_roll_dumbbell&quot;]] = NULL
+
+
+trainData[[&quot;kurtosis_picth_dumbbell&quot;]] = NULL
+testData[[&quot;kurtosis_picth_dumbbell&quot;]] = NULL
+
+
+trainData[[&quot;skewness_roll_dumbbell&quot;]] = NULL
+testData[[&quot;skewness_roll_dumbbell&quot;]] = NULL
+
+
+trainData[[&quot;skewness_pitch_dumbbell&quot;]] = NULL
+testData[[&quot;skewness_pitch_dumbbell&quot;]] = NULL
+
+trainData[[&quot;max_yaw_dumbbell&quot;]] = NULL
+testData[[&quot;max_yaw_dumbbell&quot;]] = NULL
+
+trainData[[&quot;min_yaw_dumbbell&quot;]] = NULL
+testData[[&quot;min_yaw_dumbbell&quot;]] = NULL
+
+
+
+trainData[[&quot;max_yaw_forearm&quot;]] = NULL
+testData[[&quot;max_yaw_forearm&quot;]] = NULL
+
+
+trainData[[&quot;min_yaw_forearm&quot;]] = NULL
+testData[[&quot;min_yaw_forearm&quot;]] = NULL
+
+
+dim(trainData)
+</code></pre>
+
+<pre><code>## [1] 19622   126
+</code></pre>
+
+<pre><code class="r">dim(testData)
+</code></pre>
+
+<pre><code>## [1]  20 126
+</code></pre>
+
+<h2>Preliminary Prediction Model</h2>
+
+<p>After performing the data cleaning as explained above, both the training and testing datasets contain 126 features. Some of the remaining features contains some missing (NA) values. Since the final classification model will be built using random forest, we need a strategy to handle the missing values. We first need to determine which of the predictor features/variables are important and then use only the important variables to build the final model. For the purpose of finding the important variables, a random forest model was constructed based on the 406 complete (no missing values) training observations. The followng R code constructs an preliminary random forest model and list the first 20 important variables according to the preliminary model described above. </p>
+
+<pre><code class="r">## Construct a random forest model based on complete observations (without
+## the NAs) and use the model to dertemine the important predictor variable
+
+no_NA_TrainData &lt;- na.omit(trainData)
+
+# Build preliminary random forest model; classe is the response variable,
+# against all other variables as predictors
+library(caret)
+</code></pre>
+
+<pre><code>## Loading required package: lattice
+## Loading required package: ggplot2
+</code></pre>
+
+<pre><code class="r">library(randomForest)
+</code></pre>
+
+<pre><code>## randomForest 4.6-10
+## Type rfNews() to see new features/changes/bug fixes.
+</code></pre>
+
+<pre><code class="r">set.seed(12345)
+# explo_rf.pml &lt;- train(classe~., data=no_NA_TrainData, method=&#39;rf&#39;,
+# importance=TRUE)
+explo_rf.pml &lt;- randomForest(classe ~ ., data = no_NA_TrainData, mtry = 74, 
+    ntree = 500, keep.forest = TRUE, importance = TRUE)
+
+
+## view important variables
+impVars &lt;- varImp(explo_rf.pml, scale = TRUE)
+impVars$max &lt;- apply(impVars, 1, max)
+sortedimpVars &lt;- impVars[order(-impVars$max), ]
+head(sortedimpVars, 20)
+</code></pre>
+
+<pre><code>##                           A       B       C      D        E    max
+## cvtd_timestamp       69.675 51.4880 61.0294 54.609 25.28736 69.675
+## var_accel_dumbbell   16.993 22.7390 20.6033 15.328  8.49664 22.739
+## avg_roll_dumbbell     7.680  8.0166 17.8209 11.781  0.93122 17.821
+## raw_timestamp_part_1 13.346 12.9432 12.9929 16.975 13.92990 16.975
+## stddev_roll_belt     12.930 12.2861 13.5895 15.549 15.85622 15.856
+## magnet_dumbbell_y    15.444 13.5568 10.2919  5.969  0.08725 15.444
+## var_roll_belt        11.858 11.3465 12.7414 13.860 14.53865 14.539
+## min_roll_forearm     12.132  9.1598 10.0103 12.918  1.99737 12.918
+## avg_roll_forearm      9.442  3.6383 10.5965  3.454  1.46526 10.596
+## magnet_dumbbell_z    10.372  2.7391  8.1092  6.903  5.17624 10.372
+## var_total_accel_belt  9.134  6.2625  8.7074  9.913 10.18825 10.188
+## magnet_arm_x          5.066  9.3943  1.0999  1.981  0.68651  9.394
+## roll_dumbbell         6.116  3.9547  9.3491  6.091  0.98001  9.349
+## num_window            7.358  8.7455  6.9575  2.170  2.71866  8.745
+## accel_forearm_z       2.770  2.7869  3.8566  8.638  6.72673  8.638
+## accel_forearm_x       3.175  0.4675  0.1099  8.555  4.14536  8.555
+## avg_pitch_dumbbell    4.852  3.1947  7.3130  5.701  1.64247  7.313
+## roll_forearm          7.277  4.3442  7.0260  3.198  3.52701  7.277
+## max_roll_forearm      5.995  4.6694  7.2592  6.510  2.68514  7.259
+## gyros_dumbbell_y      7.219  3.4700  4.2584  1.115 -0.62479  7.219
+</code></pre>
+
+<p>Shown below is the  confusion matrix and OOB error rate</p>
+
+<pre><code class="r">explo_rf.pml
+</code></pre>
+
+<pre><code>## 
+## Call:
+##  randomForest(formula = classe ~ ., data = no_NA_TrainData, mtry = 74,      ntree = 500, keep.forest = TRUE, importance = TRUE) 
+##                Type of random forest: classification
+##                      Number of trees: 500
+## No. of variables tried at each split: 74
+## 
+##         OOB estimate of  error rate: 8.87%
+## Confusion matrix:
+##     A  B  C  D  E class.error
+## A 106  1  1  0  1     0.02752
+## B   7 67  4  0  1     0.15190
+## C   0  6 64  0  0     0.08571
+## D   0  0  4 63  2     0.08696
+## E   0  0  1  8 70     0.11392
+</code></pre>
+
+<p>Here is a plot of the important variables</p>
+
+<pre><code class="r">
+varImpPlot(explo_rf.pml)
+</code></pre>
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAAH4CAMAAACR9g9NAAAAt1BMVEX9/v0AAAAAADkAAGUAOWUAOY8AZo8AZrU5AAA5ADk5AGU5OQA5OWU5OY85Zo85ZrU5j485j9plAABlADllAGVlOQBlOTllOY9lZgBlZjllZmVlZrVlj49ltdpltf2POQCPOTmPOWWPZgCPZo+PjzmPj2WPtY+P27WP2/21ZgC1Zjm1tWW124+1/rW1/tq1/v2+vr7ajznaj2XatWXa24/a/rXa/tra/v39tWX924/9/rX9/tr9/v0gv2ZRAAAAPXRSTlP///////////////////////////////////////////////////////////////////////////////8ACS+sXwAAAAlwSFlzAAALEgAACxIB0t1+/AAAIABJREFUeJztXQt73DZ23ZHiHVut65XjjRs3KznbdSK5tpVpk2ge/P+/q8SDBEACJEBc4F4SOF+skTgcBhdnQAAHlwd/aSqKxF+wC1CBg0p8oajEF4pKfKGoxBeKSnyhqMQXikp8oajEF4pKfKGoxBeKSnyhqMQXikp8oajEF4qSiD9//2B/47jb3QZ+ZPWoxLd43Ad/ZPXYKPGX+93uxXNzePF8ud+fv//l5e76ibMo3+jP+/hpd/VvO/YuY1mcd3r1abfbt7eBfSV+Zbjct7fulvXz27vT6/Zny+bh+qllsf0atA1cMX+5Z7/LFt+dd3q5b+/++/YL8FCJXxeOrAVf7u+a4/7xriX0jrF617J4unlqxN8C/BuiiBfnnV6Kz4iPYMWQGNsk/rDjuG14C+fstRS3r0fWwAXbHOzLoYiX57Utnf9eiV8dDt3NnN+9K/EWbJN4fqtnONwebqdv9Trx3a2+Er9W8DHb8Yrx3FLHm307orMO7gzixXmV+PWCzdquHjijj/vz2w98DmebzvXEP7I7gzivEr8RaLd2kPM2gUp8+HmbQJnEn16K+d7Vw/R5G0YJxFdYUIkvFJX4QlGJLxSV+EJRiS8UlfhCUYkvFJX4QlGJLxSV+EJRiS8UlfhCUYkvFJX4QlGJLxSV+EJRiS8UlfhCUYkvFJX4QlGJLxSV+EJRiS8UlfhCUYkvFJX4QlGJLxSV+EJRiS8UlfhCUYkvFJX4QlGJLxSV+EJRiS8UlfhCUYkvFJX4QlGJ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" alt="plot of chunk unnamed-chunk-7"/> </p>
+
+<p>Based on the Gini index the following variable were chosen to build the final model : roll belt, stddevroll belt, avg roll belt, var total accel belt, avg roll dumbbell, avg pitch forearm, var accel dumbbell, var roll belt,  raw timestamp part 1, min roll forearm, amplitude pitch belt, num window, min roll belt, max roll forearm, magnet dumbbell y, roll dumbbell,  magnet dumbbell z, accel dumbbell y, stddev pitch belt and var accel arm.</p>
+
+<h1>Building the Final Model</h1>
+
+<h1>Subsetting and imputing the data</h1>
+
+<p>Based on the important variables selected in the previous model, the training and testing data was subset to include on the important variables and the response variable (<em>classe</em>). Some of the selected prectiction variables still contain missing values and they were imputed and replaced with variable median values. The R code shown below performs the subsetting and imputing of the final model data.</p>
+
+<pre><code class="r">impVarsIndex &lt;- c(2, 6, 7, 13, 16:20, 22, 40, 68, 78, 79, 92, 95, 96, 100, 102, 
+    111)
+
+# subset trainData and testData using index of important vars
+targetTrainData &lt;- trainData[, c(impVarsIndex, 126)]
+targetTestData &lt;- testData[, c(impVarsIndex, 126)]
+
+## Impute missing (NA) values by replacing them with column median values
+
+## impute training data
+imputedTrainData &lt;- na.roughfix(targetTrainData)
+
+## combine train and test data before imputing data, without last column
+combinedData &lt;- rbind(targetTrainData[, -21], targetTestData[, -21])
+
+## impute combined data
+imputedCombinedData &lt;- na.roughfix(combinedData)
+
+## extract the 20 test cases data
+imputedTestData &lt;- imputedCombinedData[19623:19642, ]
+problem_id &lt;- targetTestData[, 21]
+imputedTestData &lt;- cbind(imputedTestData, problem_id)
+
+## remove some intermediate objects to save space
+rm(combinedData, imputedCombinedData, targetTrainData, targetTestData)
+</code></pre>
+
+<h1>Training Data partitioning and Building the Final Model</h1>
+
+<p>In order to build and test the classification model, the training data wa partitionedf into training dataset (70%) and testing dataset (30%). The random forest model is then created using the training dataset and tested using the testing dataset. The follwing R code partions the data and build the model. The confusion matric of the model is shown</p>
+
+<pre><code class="r">## Final Model Construction construct model based on chosen important
+## variables and imputed values
+
+## partition training data in train and test sets
+trainIndex &lt;- createDataPartition(imputedTrainData$classe, p = 0.7, list = FALSE)
+
+training &lt;- imputedTrainData[trainIndex, ]
+testing &lt;- imputedTrainData[-trainIndex, ]
+
+# build random forest model fit--- use mtry=2 from the exploratory analysis
+bestmtry &lt;- tuneRF(training[-21], training$classe, ntreeTry = 100, stepFactor = 1.5, 
+    improve = 0.01, trace = TRUE, plot = TRUE, dobest = FALSE)
+</code></pre>
+
+<pre><code>## mtry = 4  OOB error = 0.26% 
+## Searching left ...
+## mtry = 3     OOB error = 1.05% 
+## -3 0.01 
+## Searching right ...
+## mtry = 6     OOB error = 0.07% 
+## 0.7222 0.01 
+## mtry = 9     OOB error = 0.04% 
+## 0.4 0.01 
+## mtry = 13    OOB error = 0.04% 
+## 0 0.01
+</code></pre>
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAAH4CAMAAACR9g9NAAAAllBMVEX9/v0AAAAAADkAAFcAAGUAOTkAOY8AZrU5AAA5AGU5OTk5OWU5OY85j7U5j9plAABlADllAGVlOQBlOY9lZrVltf1mZo+POQCPOTmPOWWPZgCPZo+Pj2WPj7WPtY+Ptf2P27WP29qP2/21ZgC1j4+1tWW1/rW1/v3ajznaj4/a24/a/v39tWX9tY/924/9/rX9/tr9/v19b5DdAAAAMnRSTlP/////////////////////////////////////////////////////////////////AA1QmO8AAAAJcEhZcwAACxIAAAsSAdLdfvwAAAuMSURBVHic7d1te9rIFYfxVZrGpE3xpq1r92m3tbs1bSig7//lCtiOsY1BYs45c4b//dtrr7yBkZLbgzQCix96SPqh9g6gDsKLIrwowosivCjCiyK8KMKLIrwowosivCjCiyK8KMKLIrwowosivCjCiyK8KMKLIrwowosivCjCiyK8KMKLIrwowosivCjCiyK8KMKLIrwowosivCjCiyK8KMKLIrwowosivCjCiyK8KMKLIrwowosivCjCiyK8KMKLIrwowosivCjCiyK8KMKLIrwowosqCd8hM8fwBc+FN8KLIrwowosivCjCiyK8KMKLIrwowosKC3/0IiFCRYXvjm8LkeLCd4TPhPCiOMaLKg6/mGzf3f14f3RowmdSGn51fbX9c/7p27GhCZ9Jafjl1/sXfx4YmvCZBM54ymdSfIxfXg49xhM+k8hLtoRPhPCiQt+koXwehBdVvJy7fPx8/tuzO8JnVjzjV9fT4UNTPo3yl/rlj7eDhyZ8GrGfwCF8GoQX5fDu3KHfx6R8FpHX6o9vDmEC350bsDmECZ7xlM8i8t25AdtDlOhfqCB8EoQXZRV+4Mkd5bMI/905wudAeFGBn6sftEEEiV7HUz6J4Ct3x7eIGMx4UdFX7o5vEiEq3AqF8BkQXhThRdW46xXlEyC8KMKLqnKDQ8rXR3hRhBdFeFFVwlO+PsKLIrwowouqE57y1RFeFOFFVQpP+doIL4rwoggvqlZ4yldGeFGEF1UtPOXrIrwowosivKh64SlfFeFFEV4U4UVVDE/5mggvivCiaoanfEWEF0V4UYQXVRx+MekuZqPuczfu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" alt="plot of chunk unnamed-chunk-9"/> </p>
+
+<pre><code class="r">
+rf.pmlFit &lt;- randomForest(classe ~ ., data = training, mtry = 9, ntree = 500, 
+    keep.forest = TRUE, importance = TRUE)
+## The following command shows confusion matrix and OOB error rate
+rf.pmlFit
+</code></pre>
+
+<pre><code>## 
+## Call:
+##  randomForest(formula = classe ~ ., data = training, mtry = 9,      ntree = 500, keep.forest = TRUE, importance = TRUE) 
+##                Type of random forest: classification
+##                      Number of trees: 500
+## No. of variables tried at each split: 9
+## 
+##         OOB estimate of  error rate: 0.02%
+## Confusion matrix:
+##      A    B    C    D    E class.error
+## A 3906    0    0    0    0   0.0000000
+## B    1 2657    0    0    0   0.0003762
+## C    0    0 2396    0    0   0.0000000
+## D    0    0    1 2250    1   0.0008881
+## E    0    0    0    0 2525   0.0000000
+</code></pre>
+
+<pre><code class="r">
+</code></pre>
+
+<h1>Testing the prediction Model</h1>
+
+<p>The model constructed in the last section was tested using the partitioned testing dataset. The R code below applies the model to the testing dataset and displays a confusion matrix.</p>
+
+<pre><code class="r">## test model on the testing data
+predictions &lt;- predict(rf.pmlFit, newdata = testing)
+
+## show confusion matrix
+testingClasseValues &lt;- testing$classe
+table(predictions, testingClasseValues)
+</code></pre>
+
+<pre><code>##            testingClasseValues
+## predictions    A    B    C    D    E
+##           A 1674    1    0    0    0
+##           B    0 1138    5    0    0
+##           C    0    0 1021    0    0
+##           D    0    0    0  964    2
+##           E    0    0    0    0 1080
+</code></pre>
+
+<p>The result shows a 2% OBB error rate</p>
+
+<h1>Applying the Model to the 20 given test cases</h1>
+
+<p>The model was applied to the given 20 test cases and the r code below display the results:</p>
+
+<pre><code class="r">## apply model to test data
+test20 &lt;- predict(rf.pmlFit, newdata = imputedTestData)
+test20
+</code></pre>
+
+<pre><code>## 19623 19624 19625 19626 19627 19628 19629 19630 19631 19632 19633 19634 
+##     B     A     B     A     A     E     D     B     A     A     B     C 
+## 19635 19636 19637 19638 19639 19640 19641 19642 
+##     B     A     E     E     A     B     B     B 
+## Levels: A B C D E
+</code></pre>
+
+<h1>References</h1>
+
+<p>[1]  <a href="http://en.wikipedia.org/wiki/Activity_recognition">http://en.wikipedia.org/wiki/Activity_recognition</a> 
+     wikipedia encyclopedia
+     Accessed on 23 October, 2013</p>
+
+<p>[2] Velloso, E.; Bulling, A.; Gellersen, H.; Ugulino, W.; Fuks, H.
+Qualitative Activity Recognition of Weight Lifting Exercises.
+<em>Proceedings of 4th International Conference in Cooperation with SIGCHI (Augmented Human &#39;13) . *</em>
+Stuttgart, Germany: ACM SIGCHI, 2013</p>
+
+<h1>APPENDIX A</h1>
+
+<p>Here is a list of all the variables in the training dataset.</p>
+
+<pre><code class="r">names(trainData)
+</code></pre>
+
+<pre><code>##   [1] &quot;user_name&quot;                &quot;raw_timestamp_part_1&quot;    
+##   [3] &quot;raw_timestamp_part_2&quot;     &quot;cvtd_timestamp&quot;          
+##   [5] &quot;new_window&quot;               &quot;num_window&quot;              
+##   [7] &quot;roll_belt&quot;                &quot;pitch_belt&quot;              
+##   [9] &quot;yaw_belt&quot;                 &quot;total_accel_belt&quot;        
+##  [11] &quot;max_roll_belt&quot;            &quot;max_picth_belt&quot;          
+##  [13] &quot;min_roll_belt&quot;            &quot;min_pitch_belt&quot;          
+##  [15] &quot;amplitude_roll_belt&quot;      &quot;amplitude_pitch_belt&quot;    
+##  [17] &quot;var_total_accel_belt&quot;     &quot;avg_roll_belt&quot;           
+##  [19] &quot;stddev_roll_belt&quot;         &quot;var_roll_belt&quot;           
+##  [21] &quot;avg_pitch_belt&quot;           &quot;stddev_pitch_belt&quot;       
+##  [23] &quot;var_pitch_belt&quot;           &quot;avg_yaw_belt&quot;            
+##  [25] &quot;stddev_yaw_belt&quot;          &quot;var_yaw_belt&quot;            
+##  [27] &quot;gyros_belt_x&quot;             &quot;gyros_belt_y&quot;            
+##  [29] &quot;gyros_belt_z&quot;             &quot;accel_belt_x&quot;            
+##  [31] &quot;accel_belt_y&quot;             &quot;accel_belt_z&quot;            
+##  [33] &quot;magnet_belt_x&quot;            &quot;magnet_belt_y&quot;           
+##  [35] &quot;magnet_belt_z&quot;            &quot;roll_arm&quot;                
+##  [37] &quot;pitch_arm&quot;                &quot;yaw_arm&quot;                 
+##  [39] &quot;total_accel_arm&quot;          &quot;var_accel_arm&quot;           
+##  [41] &quot;avg_roll_arm&quot;             &quot;stddev_roll_arm&quot;         
+##  [43] &quot;var_roll_arm&quot;             &quot;avg_pitch_arm&quot;           
+##  [45] &quot;stddev_pitch_arm&quot;         &quot;var_pitch_arm&quot;           
+##  [47] &quot;avg_yaw_arm&quot;              &quot;stddev_yaw_arm&quot;          
+##  [49] &quot;var_yaw_arm&quot;              &quot;gyros_arm_x&quot;             
+##  [51] &quot;gyros_arm_y&quot;              &quot;gyros_arm_z&quot;             
+##  [53] &quot;accel_arm_x&quot;              &quot;accel_arm_y&quot;             
+##  [55] &quot;accel_arm_z&quot;              &quot;magnet_arm_x&quot;            
+##  [57] &quot;magnet_arm_y&quot;             &quot;magnet_arm_z&quot;            
+##  [59] &quot;max_roll_arm&quot;             &quot;max_picth_arm&quot;           
+##  [61] &quot;max_yaw_arm&quot;              &quot;min_roll_arm&quot;            
+##  [63] &quot;min_pitch_arm&quot;            &quot;min_yaw_arm&quot;             
+##  [65] &quot;amplitude_roll_arm&quot;       &quot;amplitude_pitch_arm&quot;     
+##  [67] &quot;amplitude_yaw_arm&quot;        &quot;roll_dumbbell&quot;           
+##  [69] &quot;pitch_dumbbell&quot;           &quot;yaw_dumbbell&quot;            
+##  [71] &quot;max_roll_dumbbell&quot;        &quot;max_picth_dumbbell&quot;      
+##  [73] &quot;min_roll_dumbbell&quot;        &quot;min_pitch_dumbbell&quot;      
+##  [75] &quot;amplitude_roll_dumbbell&quot;  &quot;amplitude_pitch_dumbbell&quot;
+##  [77] &quot;total_accel_dumbbell&quot;     &quot;var_accel_dumbbell&quot;      
+##  [79] &quot;avg_roll_dumbbell&quot;        &quot;stddev_roll_dumbbell&quot;    
+##  [81] &quot;var_roll_dumbbell&quot;        &quot;avg_pitch_dumbbell&quot;      
+##  [83] &quot;stddev_pitch_dumbbell&quot;    &quot;var_pitch_dumbbell&quot;      
+##  [85] &quot;avg_yaw_dumbbell&quot;         &quot;stddev_yaw_dumbbell&quot;     
+##  [87] &quot;var_yaw_dumbbell&quot;         &quot;gyros_dumbbell_x&quot;        
+##  [89] &quot;gyros_dumbbell_y&quot;         &quot;gyros_dumbbell_z&quot;        
+##  [91] &quot;accel_dumbbell_x&quot;         &quot;accel_dumbbell_y&quot;        
+##  [93] &quot;accel_dumbbell_z&quot;         &quot;magnet_dumbbell_x&quot;       
+##  [95] &quot;magnet_dumbbell_y&quot;        &quot;magnet_dumbbell_z&quot;       
+##  [97] &quot;roll_forearm&quot;             &quot;pitch_forearm&quot;           
+##  [99] &quot;yaw_forearm&quot;              &quot;max_roll_forearm&quot;        
+## [101] &quot;max_picth_forearm&quot;        &quot;min_roll_forearm&quot;        
+## [103] &quot;min_pitch_forearm&quot;        &quot;amplitude_roll_forearm&quot;  
+## [105] &quot;amplitude_pitch_forearm&quot;  &quot;total_accel_forearm&quot;     
+## [107] &quot;var_accel_forearm&quot;        &quot;avg_roll_forearm&quot;        
+## [109] &quot;stddev_roll_forearm&quot;      &quot;var_roll_forearm&quot;        
+## [111] &quot;avg_pitch_forearm&quot;        &quot;stddev_pitch_forearm&quot;    
+## [113] &quot;var_pitch_forearm&quot;        &quot;avg_yaw_forearm&quot;         
+## [115] &quot;stddev_yaw_forearm&quot;       &quot;var_yaw_forearm&quot;         
+## [117] &quot;gyros_forearm_x&quot;          &quot;gyros_forearm_y&quot;         
+## [119] &quot;gyros_forearm_z&quot;          &quot;accel_forearm_x&quot;         
+## [121] &quot;accel_forearm_y&quot;          &quot;accel_forearm_z&quot;         
+## [123] &quot;magnet_forearm_x&quot;         &quot;magnet_forearm_y&quot;        
+## [125] &quot;magnet_forearm_z&quot;         &quot;classe&quot;
+</code></pre>
+
+</body>
+
+</html>
+
